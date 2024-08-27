@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Pagination</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function loadPage(page) {
+                $.ajax({
+                    url: 'pagination.php',
+                    type: 'GET',
+                    data: { page: page },
+                    success: function(response) {
+                        $('#data-container').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        $('#data-container').html('An error occurred: ' + xhr.responseText);
+                    }
+                });
+            }
+            // Load the first page by default
+            loadPage(1);
+            // Handle pagination links
+            $(document).on('click', '.pagination a', function(e) {
+                e.preventDefault();
+                var page = $(this).attr('data-page');
+                loadPage(page);
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>AJAX Pagination Example</h1>
+    <div id="data-container"></div>
+</body>
+</html>

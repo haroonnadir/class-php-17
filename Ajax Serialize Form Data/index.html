@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Serialize Form Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#myForm').on('submit', function(e) {
+                e.preventDefault(); // Prevent default form submission
+
+                var formData = $(this).serialize(); // Serialize form data
+
+                $.ajax({
+                    url: 'process_form.php',
+                    type: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        $('#result').html(response); // Display the response from the server
+                    },
+                    error: function(xhr, status, error) {
+                        $('#result').html('An error occurred: ' + xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>AJAX Serialize Form Data Example</h1>
+    <form id="myForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+    <div id="result"></div>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Search with AJAX</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#search').on('keyup', function() {
+                var query = $(this).val(); // Get the value from the search input
+                if (query.length > 0) {
+                    $.ajax({
+                        url: 'search.php',
+                        type: 'POST',
+                        data: { query: query },
+                        success: function(response) {
+                            $('#result').html(response); // Display the search results
+                        },
+                        error: function(xhr, status, error) {
+                            $('#result').html('An error occurred: ' + xhr.responseText);
+                        }
+                    });
+                } else {
+                    $('#result').empty(); // Clear results if the search input is empty
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Live Search with AJAX</h1>
+    <input type="text" id="search" placeholder="Search...">
+    <div id="result"></div>
+</body>
+</html>

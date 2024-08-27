@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJAX Load More Pagination</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            let page = 1; // Initialize page number
+            let loading = false; // Flag to prevent multiple requests
+
+            function loadMoreData() {
+                if (loading) return; // If already loading, do nothing
+                loading = true;
+                $.ajax({
+                    url: 'load_more.php',
+                    type: 'GET',
+                    data: { page: page },
+                    success: function(response) {
+                        $('#data-container').append(response); // Append new data to existing content
+                        page++; // Increment page number
+                        loading = false;
+                    },
+                    error: function(xhr, status, error) {
+                        $('#data-container').append('<p>An error occurred: ' + xhr.responseText + '</p>');
+                        loading = false;
+                    }
+                });
+            }
+            // Initial data load
+            loadMoreData();
+            // Load more data on button click
+            $('#load-more-btn').click(function() {
+                loadMoreData();
+            });
+            // Optional: Load more data on scroll to bottom
+            $(window).scroll(function() {
+                if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                    loadMoreData();
+                }
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>AJAX Load More Pagination Example</h1>
+    <div id="data-container"></div>
+    <button id="load-more-btn">Load More</button>
+</body>
+</html>
